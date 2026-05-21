@@ -286,7 +286,7 @@
           } catch(err) {
             console.error('Error sending booking to backend:', err);
           }
-          window.open(generateWhatsAppLink(`Hi! I'd like to book ${pkg.title} on ${data.check_in} for ${data.guests} guests.`), '_blank');
+          window.location.href = generateWhatsAppLink(`Hi! I'd like to book ${pkg.title} on ${data.check_in} for ${data.guests} guests.`);
         };
 
         lucide.createIcons();

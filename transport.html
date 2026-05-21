@@ -235,7 +235,7 @@
         }
         alert('Opening WhatsApp to complete your booking...');
         closeBookingModal();
-        window.open(generateWhatsAppLink(whatsappMsg), '_blank');
+        window.location.href = generateWhatsAppLink(whatsappMsg);
       };
     });
   </script>
