@@ -305,6 +305,21 @@
 
         document.getElementById('booking-form').onsubmit = async (e) => {
           e.preventDefault();
+          const guests = parseInt(document.getElementById('b-guests').value);
+          
+          let maxCapacity = 2;
+          if (room.capacity) {
+            const nums = room.capacity.match(/\d+/g);
+            if (nums) {
+                maxCapacity = nums.reduce((sum, num) => sum + parseInt(num), 0);
+            }
+          }
+          
+          if (guests > maxCapacity) {
+              alert(`Sorry, this room can only accommodate up to ${maxCapacity} guests. Please reduce the number of guests or select a different room.`);
+              return;
+          }
+
           const data = {
             customer_name: document.getElementById('b-name').value,
             customer_phone: document.getElementById('b-phone').value,

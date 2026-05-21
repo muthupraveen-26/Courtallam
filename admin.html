@@ -542,8 +542,16 @@
                     <input type="text" id="roomAmenities" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label>Capacity</label>
-                    <input type="text" id="roomCapacity" class="form-control">
+                    <div class="grid grid-cols-2" style="gap: 1rem;">
+                      <div>
+                        <label>Max Adults</label>
+                        <input type="number" id="roomCapacityAdults" class="form-control" min="1" value="2" required>
+                      </div>
+                      <div>
+                        <label>Max Children</label>
+                        <input type="number" id="roomCapacityChildren" class="form-control" min="0" value="0" required>
+                      </div>
+                    </div>
                 </div>
                 <div class="grid-2">
                     <div class="form-group">
@@ -1348,7 +1356,10 @@
           }
           if (currentCategory === 'rooms') {
             document.getElementById('roomAmenities').value = Array.isArray(item.amenities) ? item.amenities.join(', ') : '';
-            document.getElementById('roomCapacity').value = item.capacity || '';
+            const capStr = item.capacity || '';
+            const nums = capStr.match(/\d+/g) || ['2', '0'];
+            document.getElementById('roomCapacityAdults').value = nums[0] || 2;
+            document.getElementById('roomCapacityChildren').value = nums[1] || 0;
             document.getElementById('roomAvailable').checked = !!item.available;
             document.getElementById('roomCheckInTime').value = item.check_in_time || '';
             document.getElementById('roomCheckOutTime').value = item.check_out_time || '';
@@ -1812,7 +1823,9 @@
         }
         if (currentCategory === 'rooms') {
             payload.amenities = document.getElementById('roomAmenities').value.split(',').map(s => s.trim());
-            payload.capacity = document.getElementById('roomCapacity').value;
+            const adults = document.getElementById('roomCapacityAdults').value || 0;
+            const children = document.getElementById('roomCapacityChildren').value || 0;
+            payload.capacity = `${adults} Adults, ${children} Children`;
             payload.available = document.getElementById('roomAvailable').checked;
             payload.check_in_time = document.getElementById('roomCheckInTime').value.trim() || null;
             payload.check_out_time = document.getElementById('roomCheckOutTime').value.trim() || null;
