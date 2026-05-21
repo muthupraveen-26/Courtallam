@@ -323,6 +323,7 @@
           } catch(err) {
             console.error('Error sending booking to backend:', err);
           }
+          alert('Request sent successfully, you will be contacted shortly!\n\nRedirecting to WhatsApp to complete your request...');
           window.location.href = generateWhatsAppLink(`Hi! I'd like to book ${room.name} from ${data.check_in} to ${data.check_out} for ${data.guests} guests.`);
         };
 

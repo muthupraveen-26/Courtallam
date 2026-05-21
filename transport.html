@@ -233,7 +233,7 @@
         } catch (err) {
           console.error('Error booking transport:', err);
         }
-        alert('Opening WhatsApp to complete your booking...');
+        alert('Request sent successfully, you will be contacted shortly!\n\nRedirecting to WhatsApp to complete your request...');
         closeBookingModal();
         window.location.href = generateWhatsAppLink(whatsappMsg);
       };

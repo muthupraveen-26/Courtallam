@@ -292,6 +292,7 @@
           } catch(err) {
             console.error('Error sending booking to backend:', err);
           }
+          alert('Request sent successfully, you will be contacted shortly!\n\nRedirecting to WhatsApp to complete your request...');
           window.location.href = generateWhatsAppLink(`Hi! I'd like to book ${pkg.title} on ${data.check_in} for ${data.guests} guests.`);
         };
 
