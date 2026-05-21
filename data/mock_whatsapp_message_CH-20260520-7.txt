@@ -1,0 +1,5 @@
+To (Phone): 9003323901
+Message: Hi muthu! Your booking is confirmed. Booking ID: CH-20260520-7. Click here to download your invoice: http://localhost:8000/uploads/invoices/invoice_CH-20260520-7.pdf
+Attachment URL: http://localhost:8000/uploads/invoices/invoice_CH-20260520-7.pdf
+n8n Triggered: No
+Evolution API Triggered: No

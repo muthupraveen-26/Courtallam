@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transport | Courtallam Holidays by Tourver</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    /* Modal Styles */
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; z-index: 1000; padding: 1rem; }
+    .modal.active { display: flex; }
+    .modal-content { background: #fff; padding: 2.5rem 2rem; border-radius: var(--radius-lg); width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: var(--shadow-lg); }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .close-modal { background: none; border: none; cursor: pointer; font-size: 1.5rem; color: var(--text-light); display: flex; align-items: center; justify-content: center; }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-brand">
+        <div style="display: flex; align-items: center;"><img src="images/logo.png" alt="Logo" style="height: 80px; margin-right: 12px; margin-top: -10px; margin-bottom: -10px;"><div style="display: inline-flex; flex-direction: column; line-height: 1;"><span style="font-size: 1.5rem; font-weight: 700; color: inherit; white-space: nowrap;">Courtallam Holidays</span><span style="font-size: 0.75rem; font-weight: 600; letter-spacing: 3px; color: var(--accent); margin-top: 2px; white-space: nowrap;">BY TOURVER</span></div></div>
+      </a>
+      <button class="mobile-toggle"><i data-lucide="menu"></i></button>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="packages.html" class="nav-link">Packages</a>
+        <a href="rooms.html" class="nav-link">Rooms</a>
+        <a href="transport.html" class="nav-link">Transport</a>
+        <a href="about.html" class="nav-link">About Us</a>
+        <a href="contact.html" class="btn btn-primary">Enquiry Now</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="section section-dark text-center" style="padding: var(--spacing-2xl) 0;">
+    <div class="container fade-in">
+      <h1>Mode of Transport</h1>
+      <p style="max-width: 600px; margin: 0 auto;">Reliable autos and comfortable cabs for your local sightseeing in Courtallam.</p>
+    </div>
+  </header>
+
+  <!-- Content Section -->
+  <section class="section section-light">
+    <div class="container">
+      
+      <!-- Filters -->
+      <div class="tabs-nav fade-in">
+        <button class="tab-btn active" data-target="all">All Vehicles</button>
+        <button class="tab-btn" data-target="auto">Auto Rickshaws</button>
+        <button class="tab-btn" data-target="cab">Cabs & SUVs</button>
+      </div>
+
+      <!-- Transport Grid -->
+      <div class="grid grid-cols-3" id="transport-container">
+        <!-- Rendered via JS -->
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Booking Modal -->
+  <div class="modal" id="bookingModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style="margin: 0;">Request Transport Booking</h3>
+        <button class="close-modal" onclick="closeBookingModal()"><i data-lucide="x"></i></button>
+      </div>
+      <form id="transport-booking-form">
+        <input type="hidden" id="booking-transport-id">
+        <input type="hidden" id="booking-transport-name">
+        
+        <div class="form-group">
+          <label>Selected Vehicle</label>
+          <input type="text" class="form-control" id="booking-vehicle-display" readonly style="background: var(--bg); font-weight: 600; color: var(--primary);">
+        </div>
+        
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" class="form-control" id="b-name" required placeholder="Enter your full name">
+        </div>
+        
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" class="form-control" id="b-phone" pattern="[0-9]{10}" minlength="10" maxlength="10" title="Please enter a valid 10-digit phone number" required placeholder="Enter your phone number">
+        </div>
+        
+        <div class="grid grid-cols-2" style="gap: 1rem;">
+          <div class="form-group">
+            <label>Ride Date</label>
+            <input type="date" class="form-control" id="b-date" required>
+          </div>
+          
+          <div class="form-group">
+            <label>No. of Passengers</label>
+            <input type="number" class="form-control" id="b-guests" min="1" required placeholder="e.g. 3">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>Route & Travel Details</label>
+          <textarea class="form-control" id="b-message" rows="3" placeholder="Specify your pickup details, drop-off location or preferred waterfalls..."></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-primary w-100" style="margin-top: 1rem;">Request Booking</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container text-center">
+      <p style="color: var(--text-light);">&copy; 2026 Courtallam Holidays by Tourver. All rights reserved. </p>
+    </div>
+  </footer>
+
+  <script src="js/prices.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      
+      const container = document.getElementById('transport-container');
+      const tabs = document.querySelectorAll('.tab-btn');
+
+      async function renderTransport(filter = 'all') {
+        container.innerHTML = '<p>Loading transport options...</p>';
+        try {
+          const response = await fetch('/api/transport?t=' + Date.now());
+          const dbTransport = await response.json();
+          const transport = dbTransport.length > 0 ? dbTransport : appData.transport;
+          
+          container.innerHTML = '';
+          const filtered = filter === 'all' 
+            ? transport 
+            : transport.filter(t => t.category === filter);
+          
+          if (filtered.length === 0) {
+            container.innerHTML = '<p>No transport options found.</p>';
+            return;
+          }
+
+          container.innerHTML = filtered.map(createTransportCard).join('');
+          lucide.createIcons();
+          
+          const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                obs.unobserve(entry.target);
+              }
+            });
+          });
+          document.querySelectorAll('#transport-container .fade-in').forEach(el => observer.observe(el));
+        } catch (error) {
+          console.error("Fetch failed, using static data", error);
+          const transport = appData.transport;
+          const filtered = filter === 'all' ? transport : transport.filter(t => t.category === filter);
+          container.innerHTML = filtered.map(createTransportCard).join('');
+        }
+      }
+
+      renderTransport();
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', (e) => {
+          tabs.forEach(t => t.classList.remove('active'));
+          e.target.classList.add('active');
+          renderTransport(e.target.dataset.target);
+        });
+      });
+      
+      window.openBookingModal = function(id, name) {
+        document.getElementById('booking-transport-id').value = id;
+        document.getElementById('booking-transport-name').value = name;
+        document.getElementById('booking-vehicle-display').value = name;
+        document.getElementById('bookingModal').classList.add('active');
+        lucide.createIcons();
+      }
+
+      window.closeBookingModal = function() {
+        document.getElementById('bookingModal').classList.remove('active');
+        document.getElementById('transport-booking-form').reset();
+      }
+
+      document.getElementById('transport-booking-form').onsubmit = async (e) => {
+        e.preventDefault();
+        
+        const id = document.getElementById('booking-transport-id').value;
+        const name = document.getElementById('booking-transport-name').value;
+        const customerName = document.getElementById('b-name').value;
+        const customerPhone = document.getElementById('b-phone').value;
+        const date = document.getElementById('b-date').value;
+        const guests = document.getElementById('b-guests').value;
+        const message = document.getElementById('b-message').value;
+
+        const payload = {
+          customer_name: customerName,
+          customer_phone: customerPhone,
+          item_type: 'transport',
+          item_id: id,
+          check_in: date,
+          check_out: date,
+          guests: parseInt(guests),
+          message: message
+        };
+
+        const whatsappMsg = `Hi Courtallam Holidays! I would like to request a transport booking:\n\n` +
+                            `🚗 *Vehicle:* ${name}\n` +
+                            `👤 *Name:* ${customerName}\n` +
+                            `📞 *Phone:* ${customerPhone}\n` +
+                            `📅 *Date:* ${date}\n` +
+                            `👥 *Passengers:* ${guests} persons\n` +
+                            `📝 *Details:* ${message || 'None'}`;
+        try {
+          await fetch('/api/bookings', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+        } catch (err) {
+          console.error('Error booking transport:', err);
+        }
+        alert('Opening WhatsApp to complete your booking...');
+        closeBookingModal();
+        window.open(generateWhatsAppLink(whatsappMsg), '_blank');
+      };
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+To (Phone): 9003323901
+Message: Hi dzd4! Your booking is confirmed. Booking ID: CH-20260516-3. Click here to download your invoice: http://localhost:8000/uploads/invoices/invoice_CH-20260516-3.pdf
+Attachment URL: http://localhost:8000/uploads/invoices/invoice_CH-20260516-3.pdf
+n8n Triggered: No
+Evolution API Triggered: No

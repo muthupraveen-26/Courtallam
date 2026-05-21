@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Room Details | Courtallam Holidays by Tourver</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+
+    .gallery-container { position: relative; width: 100%; height: 450px; overflow: hidden; border-radius: var(--radius-lg); margin-bottom: var(--spacing-lg); }
+    .gallery-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.5s ease; }
+    .gallery-slide.active { opacity: 1; }
+    .gallery-slide img { width: 100%; height: 100%; object-fit: cover; }
+    .gallery-nav { position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%); display: flex; gap: 0.5rem; z-index: 10; }
+    .gallery-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; }
+    .gallery-dot.active { background: #fff; }
+    
+    .gallery-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 15;
+      transition: all 0.3s ease;
+      opacity: 0.8;
+    }
+    .gallery-arrow:hover {
+      background: rgba(255, 255, 255, 0.4);
+      opacity: 1;
+    }
+    .gallery-arrow.prev { left: 1rem; }
+    .gallery-arrow.next { right: 1rem; }
+
+    .room-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
+    }
+    
+    @media (max-width: 768px) {
+      .room-grid {
+        grid-template-columns: 1fr;
+      }
+      .gallery-container {
+        height: 250px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-brand">
+        <div style="display: flex; align-items: center;"><img src="images/logo.png" alt="Logo" style="height: 80px; margin-right: 12px; margin-top: -10px; margin-bottom: -10px;"><div style="display: inline-flex; flex-direction: column; line-height: 1;"><span style="font-size: 1.5rem; font-weight: 700; color: inherit; white-space: nowrap;">Courtallam Holidays</span><span style="font-size: 0.75rem; font-weight: 600; letter-spacing: 3px; color: var(--accent); margin-top: 2px; white-space: nowrap;">BY TOURVER</span></div></div>
+      </a>
+      <button class="mobile-toggle"><i data-lucide="menu"></i></button>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="packages.html" class="nav-link">Packages</a>
+        <a href="rooms.html" class="nav-link" style="color: var(--primary);">Rooms</a>
+        <a href="transport.html" class="nav-link">Transport</a>
+        <a href="about.html" class="nav-link">About Us</a>
+        <a href="contact.html" class="btn btn-primary">Enquiry Now</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="section section-light" id="content-section" style="display: none;">
+    <div class="container">
+      <a href="rooms.html" class="btn btn-outline mb-4"><i data-lucide="arrow-left"></i> Back to Rooms</a>
+      <div class="room-grid">
+        <div>
+          <div class="gallery-container" id="gallery-root"></div>
+          <div class="flex justify-between items-center mb-2">
+            <h1 id="room-title" style="margin: 0;"></h1>
+            <div id="room-availability"></div>
+          </div>
+          <div style="display: flex; gap: 1.5rem; color: var(--text-light); margin-bottom: 1.5rem; flex-wrap: wrap; font-size: 0.95rem;">
+            <div id="room-capacity-container"><i data-lucide="users" style="width: 18px; height: 18px; vertical-align: middle; margin-right: 4px;"></i> Max Guests: <span id="room-capacity" style="font-weight: 600; color: var(--text);"></span></div>
+            <div id="room-timings-container" style="display: none;"><i data-lucide="clock" style="width: 18px; height: 18px; vertical-align: middle; margin-right: 4px;"></i> Check-in: <strong id="room-checkin-time" style="color: var(--primary);"></strong> | Check-out: <strong id="room-checkout-time" style="color: var(--primary);"></strong></div>
+          </div>
+          <p id="room-desc" style="font-size: 1.1rem; margin-bottom: 2rem;"></p>
+          <h3 class="mb-2">Room Amenities</h3>
+          <div id="room-amenities" class="grid grid-cols-2 mb-4"></div>
+        </div>
+        <div>
+          <div class="card" style="position: sticky; top: 100px;">
+            <div class="card-body">
+              <h3 class="mb-1">Book this Room</h3>
+              <div class="card-price mb-3"><span id="room-price-display" style="font-size: 2rem; color: var(--primary-dark); font-weight: 700;"></span> <span id="room-price-suffix" style="font-size: 1rem; color: var(--text-light);">/ night</span></div>
+              
+              <div id="booking-form-timings" style="display: none; background: var(--bg-soft); padding: 0.75rem; border-radius: var(--radius-md); border: 1px solid var(--border); margin-bottom: 1.25rem; font-size: 0.875rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem; color: var(--text-light);">
+                  <span>Standard Check-in:</span> <strong id="form-checkin-time" style="color: var(--primary-dark); font-weight: 600;"></strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; color: var(--text-light);">
+                  <span>Standard Check-out:</span> <strong id="form-checkout-time" style="color: var(--primary-dark); font-weight: 600;"></strong>
+                </div>
+              </div>
+
+              <form id="booking-form">
+                <div class="form-group"><label>Name</label><input type="text" class="form-control" id="b-name" required></div>
+                <div class="form-group"><label>Phone</label><input type="tel" class="form-control" id="b-phone" pattern="[0-9]{10}" minlength="10" maxlength="10" title="Please enter a valid 10-digit phone number" required></div>
+                <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1rem;">
+                  <div class="form-group"><label>Check-in</label><input type="date" class="form-control" id="b-checkin" required></div>
+                  <div class="form-group"><label>Check-out</label><input type="date" class="form-control" id="b-checkout" required></div>
+                </div>
+                <div class="form-group"><label>Number of Guests</label><input type="number" class="form-control" id="b-guests" min="1" required></div>
+                <div class="form-group"><label>Special Requests</label><textarea class="form-control" id="b-message" rows="2" placeholder="Any specific requirements..."></textarea></div>
+                <button type="submit" class="btn btn-primary w-100" id="submit-btn">Request Booking</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="js/data.js?v=6"></script>
+  <script src="js/main.js?v=6"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const roomId = urlParams.get('id');
+      const checkinParam = urlParams.get('checkin');
+      const checkoutParam = urlParams.get('checkout');
+      
+      let fetchUrl = `/api/rooms?t=${Date.now()}`;
+      if (checkinParam && checkoutParam) {
+          fetchUrl += `&checkin=${checkinParam}&checkout=${checkoutParam}`;
+      }
+      const response = await fetch(fetchUrl);
+      const rooms = await response.json();
+      const room = rooms.find(r => r.id === roomId);
+
+      if (room) {
+        document.getElementById('content-section').style.display = 'block';
+        document.getElementById('room-title').textContent = room.name;
+        document.getElementById('room-desc').textContent = room.description;
+        document.getElementById('room-capacity').textContent = room.capacity || 'N/A';
+
+        if (room.check_in_time || room.check_out_time) {
+          document.getElementById('room-timings-container').style.display = 'block';
+          document.getElementById('room-checkin-time').textContent = room.check_in_time || '12:00 PM';
+          document.getElementById('room-checkout-time').textContent = room.check_out_time || '11:00 AM';
+
+          document.getElementById('booking-form-timings').style.display = 'block';
+          document.getElementById('form-checkin-time').textContent = room.check_in_time || '12:00 PM';
+          document.getElementById('form-checkout-time').textContent = room.check_out_time || '11:00 AM';
+        }
+
+        const pricing = getCurrentPrice(room);
+        const basePrice = pricing.price;
+        
+        function updateRoomPriceDisplay(nights = 1) {
+            const totalPrice = basePrice * nights;
+            let priceHTML = `₹${totalPrice.toLocaleString()}`;
+            if (room.is_offer && pricing.original && pricing.original > basePrice) {
+                const totalOriginal = pricing.original * nights;
+                priceHTML = `
+                  <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    <span style="text-decoration: line-through; color: var(--text-light); font-size: 1rem; font-weight: normal;">₹${totalOriginal.toLocaleString()}</span>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                      <span style="color: var(--primary-dark); font-size: 2.5rem; font-weight: 800;">₹${totalPrice.toLocaleString()}</span>
+                    </div>
+                  </div>
+                `;
+            }
+            document.getElementById('room-price-display').innerHTML = priceHTML;
+            document.getElementById('room-price-suffix').textContent = nights > 1 ? `total for ${nights} nights` : '/ night';
+        }
+        
+        updateRoomPriceDisplay(1);
+
+        // Gallery
+        let images = [];
+        try { images = room.images ? (typeof room.images === 'string' ? JSON.parse(room.images) : room.images) : [room.image]; } catch(e) { images = [room.image]; }
+        const galleryRoot = document.getElementById('gallery-root');
+        galleryRoot.innerHTML = images.map((img, i) => `<div class="gallery-slide ${i===0?'active':''}"><img src="${img}"></div>`).join('');
+        if(images.length > 1) {
+            galleryRoot.insertAdjacentHTML('beforeend', `
+                <div class="gallery-nav">
+                    ${images.map((_, i) => `<div class="gallery-dot ${i===0?'active':''}" onclick="switchSlide(${i})"></div>`).join('')}
+                </div>
+                <button class="gallery-arrow prev" onclick="prevSlide()"><i data-lucide="chevron-left"></i></button>
+                <button class="gallery-arrow next" onclick="nextSlide()"><i data-lucide="chevron-right"></i></button>
+            `);
+        }
+
+        const availabilityDiv = document.getElementById('room-availability');
+        const submitBtn = document.getElementById('submit-btn');
+
+        // Initial setup based on server response (which includes checkin/checkout context if provided)
+        if (room.available) {
+          availabilityDiv.innerHTML = `<span style="color: var(--success); font-weight: 600;"><i data-lucide="check-circle"></i> Available</span>`;
+        } else {
+          availabilityDiv.innerHTML = `<span style="color: var(--error); font-weight: 600;"><i data-lucide="x-circle"></i> Sold Out</span>`;
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Currently Unavailable';
+        }
+
+        // Real-time Availability Checker
+        const checkinInput = document.getElementById('b-checkin');
+        const checkoutInput = document.getElementById('b-checkout');
+        
+        if (checkinParam) checkinInput.value = checkinParam;
+        if (checkoutParam) checkoutInput.value = checkoutParam;
+
+        async function checkDatesAvailability() {
+            const ci = checkinInput.value;
+            const co = checkoutInput.value;
+            
+            // Calculate nights for dynamic pricing
+            let nights = 1;
+            if (ci && co) {
+                const date1 = new Date(ci);
+                const date2 = new Date(co);
+                if (!isNaN(date1) && !isNaN(date2)) {
+                    const diffTime = Math.abs(date2 - date1);
+                    nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    if (nights < 1) nights = 1;
+                }
+            }
+            updateRoomPriceDisplay(nights);
+            
+            if (ci && co) {
+                try {
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Checking availability...';
+                    
+                    const res = await fetch(`/api/check-availability?item_id=${room.id}&checkin=${ci}&checkout=${co}`);
+                    const data = await res.json();
+                    
+                    if (data.available) {
+                        availabilityDiv.innerHTML = `<span style="color: var(--success); font-weight: 600;"><i data-lucide="check-circle"></i> Available for selected dates</span>`;
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Request Booking';
+                    } else {
+                        availabilityDiv.innerHTML = `<span style="color: var(--error); font-weight: 600;"><i data-lucide="x-circle"></i> Sold Out for these dates</span>`;
+                        submitBtn.disabled = true;
+                        submitBtn.textContent = 'Dates Unavailable';
+                    }
+                    lucide.createIcons();
+                } catch (e) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Request Booking';
+                }
+            } else {
+                // Restore base room availability if dates cleared
+                if (room.available) {
+                    availabilityDiv.innerHTML = `<span style="color: var(--success); font-weight: 600;"><i data-lucide="check-circle"></i> Available</span>`;
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Request Booking';
+                } else {
+                    availabilityDiv.innerHTML = `<span style="color: var(--error); font-weight: 600;"><i data-lucide="x-circle"></i> Sold Out</span>`;
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Currently Unavailable';
+                }
+                lucide.createIcons();
+            }
+        }
+        
+        checkinInput.addEventListener('change', checkDatesAvailability);
+        checkoutInput.addEventListener('change', checkDatesAvailability);
+
+        const amContainer = document.getElementById('room-amenities');
+        (room.amenities || []).forEach(am => {
+          amContainer.innerHTML += `<div style="display:flex; align-items:center; gap:0.5rem;"><i data-lucide="check" style="color:var(--primary);"></i> ${am}</div>`;
+        });
+
+        document.getElementById('booking-form').onsubmit = async (e) => {
+          e.preventDefault();
+          const data = {
+            customer_name: document.getElementById('b-name').value,
+            customer_phone: document.getElementById('b-phone').value,
+            item_type: 'room', item_id: room.id,
+            check_in: document.getElementById('b-checkin').value,
+            check_out: document.getElementById('b-checkout').value,
+            guests: parseInt(document.getElementById('b-guests').value),
+            message: document.getElementById('b-message').value
+          };
+          try {
+            await fetch('/api/bookings', { 
+              method: 'POST', 
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(data) 
+            });
+          } catch(err) {
+            console.error('Error sending booking to backend:', err);
+          }
+          window.open(generateWhatsAppLink(`Hi! I'd like to book ${room.name} from ${data.check_in} to ${data.check_out} for ${data.guests} guests.`), '_blank');
+        };
+
+        lucide.createIcons();
+      }
+    });
+
+    let currentSlideIdx = 0;
+    function switchSlide(idx) {
+        const slides = document.querySelectorAll('.gallery-slide');
+        const dots = document.querySelectorAll('.gallery-dot');
+        if (!slides.length) return;
+        
+        currentSlideIdx = (idx + slides.length) % slides.length;
+        
+        slides.forEach(s => s.classList.remove('active'));
+        dots.forEach(d => d.classList.remove('active'));
+        
+        slides[currentSlideIdx].classList.add('active');
+        if (dots[currentSlideIdx]) dots[currentSlideIdx].classList.add('active');
+    }
+
+    function nextSlide() { switchSlide(currentSlideIdx + 1); }
+    function prevSlide() { switchSlide(currentSlideIdx - 1); }
+  </script>
+</body>
+</html>
+
+

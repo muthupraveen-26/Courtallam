@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us | Courtallam Holidays by Tourver</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="stylesheet" href="css/main.css?v=8">
+  <link rel="stylesheet" href="css/nav.css?v=8">
+  <link rel="stylesheet" href="css/components.css?v=8">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-brand">
+        <div style="display: flex; align-items: center;"><img src="images/logo.png" alt="Logo" style="height: 80px; margin-right: 12px; margin-top: -10px; margin-bottom: -10px;"><div style="display: inline-flex; flex-direction: column; line-height: 1;"><span style="font-size: 1.5rem; font-weight: 700; color: inherit; white-space: nowrap;">Courtallam Holidays</span><span style="font-size: 0.75rem; font-weight: 600; letter-spacing: 3px; color: var(--accent); margin-top: 2px; white-space: nowrap;">BY TOURVER</span></div></div>
+      </a>
+      <button class="mobile-toggle"><i data-lucide="menu"></i></button>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="packages.html" class="nav-link">Packages</a>
+        <a href="rooms.html" class="nav-link">Rooms</a>
+        <a href="transport.html" class="nav-link">Transport</a>
+        <a href="about.html" class="nav-link">About Us</a>
+        <a href="contact.html" class="btn btn-primary">Enquiry Now</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="section section-dark text-center" style="padding: var(--spacing-2xl) 0;">
+    <div class="container fade-in">
+      <h1>Contact Us</h1>
+      <p style="max-width: 600px; margin: 0 auto;">We're here to help you plan the perfect trip.</p>
+    </div>
+  </header>
+
+  <!-- Content Section -->
+  <section class="section section-light">
+    <div class="container" style="max-width: 800px; margin: 0 auto;">
+      
+      <!-- Contact Info & Form -->
+      <div class="fade-in">
+        <h2 class="text-primary mb-2 text-center">Get in Touch</h2>
+        <p class="mb-4 text-center">Have a question about our packages, rooms, or transport? Send us a message and we'll get back to you immediately.</p>
+
+        <div class="grid contact-info-grid mb-4" style="gap: var(--spacing-md); grid-template-columns: 1fr 1fr;">
+          <div>
+            <div style="color: var(--primary); font-weight: 600; margin-bottom: 0.25rem;"><i data-lucide="phone"></i> Phone / WhatsApp</div>
+            <div class="contact-phone-text">+91 73392 84010</div>
+          </div>
+          <div>
+            <div style="color: var(--primary); font-weight: 600; margin-bottom: 0.25rem;"><i data-lucide="mail"></i> Email</div>
+            <div class="contact-email-text">bookings@courtallamseasons.com</div>
+          </div>
+        </div>
+
+        <div id="form-message" style="display: none; padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1rem; text-align: center; font-weight: 600;"></div>
+        
+        <form id="contact-form" class="card" style="padding: var(--spacing-lg);">
+          <div class="form-group">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-control" id="c-name" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" id="c-email" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Query Related To</label>
+            <select class="form-control" id="c-subject">
+              <option value="General Inquiry">General Inquiry</option>
+              <option value="Package Booking">Package Booking</option>
+              <option value="Room Booking">Room Booking</option>
+              <option value="Transport Inquiry">Transport Inquiry</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Message</label>
+            <textarea class="form-control" id="c-message" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary w-100" style="width: 100%;">Send Message</button>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container text-center">
+      <p style="color: var(--text-light);">&copy; 2026 Courtallam Holidays by Tourver. All rights reserved. </p>
+    </div>
+  </footer>
+
+  <script src="js/prices.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+
+      // Form Handling
+      document.getElementById('contact-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('c-name').value;
+        const email = document.getElementById('c-email').value;
+        const subject = document.getElementById('c-subject').value;
+        const message = document.getElementById('c-message').value;
+        const msgBox = document.getElementById('form-message');
+        
+        try {
+          const btn = e.target.querySelector('button[type="submit"]');
+          btn.disabled = true;
+          btn.textContent = 'Sending...';
+          msgBox.style.display = 'none';
+          
+          const response = await fetch('/api/inquiries', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, subject, message })
+          });
+          
+          if (response.ok) {
+            msgBox.textContent = 'Inquiry sent successfully! We will get back to you soon.';
+            msgBox.style.backgroundColor = '#e6f4ea';
+            msgBox.style.color = 'var(--success)';
+            msgBox.style.display = 'block';
+            e.target.reset();
+          } else {
+            msgBox.textContent = 'Failed to send inquiry. Please try again.';
+            msgBox.style.backgroundColor = '#fce8e6';
+            msgBox.style.color = 'var(--error)';
+            msgBox.style.display = 'block';
+          }
+        } catch (err) {
+          console.error(err);
+          msgBox.textContent = 'An error occurred. Please check your connection.';
+          msgBox.style.backgroundColor = '#fce8e6';
+          msgBox.style.color = 'var(--error)';
+          msgBox.style.display = 'block';
+        } finally {
+          const btn = e.target.querySelector('button[type="submit"]');
+          btn.disabled = false;
+          btn.textContent = 'Send Message';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+
+

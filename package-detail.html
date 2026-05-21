@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Package Details | Courtallam Holidays by Tourver</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+
+    .gallery-container { position: relative; width: 100%; height: 450px; overflow: hidden; border-radius: var(--radius-lg); margin-bottom: var(--spacing-lg); }
+    .gallery-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.5s ease; }
+    .gallery-slide.active { opacity: 1; }
+    .gallery-slide img { width: 100%; height: 100%; object-fit: cover; }
+    .gallery-nav { position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%); display: flex; gap: 0.5rem; z-index: 10; }
+    .gallery-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; }
+    .gallery-dot.active { background: #fff; }
+    
+    .gallery-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 15;
+      transition: all 0.3s ease;
+      opacity: 0.8;
+    }
+    .gallery-arrow:hover {
+      background: rgba(255, 255, 255, 0.4);
+      opacity: 1;
+    }
+    .gallery-arrow.prev { left: 1rem; }
+    .gallery-arrow.next { right: 1rem; }
+    
+    .package-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
+    }
+    
+    @media (max-width: 768px) {
+      .package-grid {
+        grid-template-columns: 1fr;
+      }
+      .gallery-container {
+        height: 250px;
+      }
+    }
+
+    /* Accordion */
+    .accordion-item { border: 1px solid var(--border); border-radius: var(--radius-md); margin-bottom: 0.5rem; overflow: hidden; }
+    .accordion-header { background: #fff; padding: 1rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; transition: background 0.2s; }
+    .accordion-header:hover { background: var(--bg); }
+    .accordion-content { display: none; padding: 1rem; background: #fff; border-top: 1px solid var(--border); line-height: 1.6; color: var(--text); white-space: pre-wrap; }
+    .accordion-item.active .accordion-content { display: block; }
+    .accordion-item.active .accordion-header { background: var(--bg); color: var(--primary); }
+    .accordion-header i { transition: transform 0.3s ease; }
+    .accordion-item.active .accordion-header i { transform: rotate(180deg); }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-brand">
+        <div style="display: flex; align-items: center;"><img src="images/logo.png" alt="Logo" style="height: 80px; margin-right: 12px; margin-top: -10px; margin-bottom: -10px;"><div style="display: inline-flex; flex-direction: column; line-height: 1;"><span style="font-size: 1.5rem; font-weight: 700; color: inherit; white-space: nowrap;">Courtallam Holidays</span><span style="font-size: 0.75rem; font-weight: 600; letter-spacing: 3px; color: var(--accent); margin-top: 2px; white-space: nowrap;">BY TOURVER</span></div></div>
+      </a>
+      <button class="mobile-toggle"><i data-lucide="menu"></i></button>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="packages.html" class="nav-link" style="color: var(--primary);">Packages</a>
+        <a href="rooms.html" class="nav-link">Rooms</a>
+        <a href="transport.html" class="nav-link">Transport</a>
+        <a href="about.html" class="nav-link">About Us</a>
+        <a href="contact.html" class="btn btn-primary">Enquiry Now</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="section section-light" id="content-section" style="display: none;">
+    <div class="container">
+      <a href="packages.html" class="btn btn-outline mb-4"><i data-lucide="arrow-left"></i> Back to Packages</a>
+      <div class="package-grid">
+        <div>
+          <div class="gallery-container" id="gallery-root"></div>
+          <h1 id="pkg-title"></h1>
+          <div class="card-meta mb-4"><i data-lucide="clock"></i> <span id="pkg-duration"></span></div>
+          <p id="pkg-desc" style="font-size: 1.1rem;"></p>
+          <h3 class="mt-4 mb-2">Inclusions</h3>
+          <ul id="pkg-inclusions" style="margin-bottom: 2rem;"></ul>
+          <h3 class="mb-2">Day-wise Itinerary</h3>
+          <div id="pkg-itinerary"></div>
+        </div>
+        <div>
+          <div class="card" style="position: sticky; top: 100px;">
+            <div class="card-body">
+              <h3 class="mb-1">Book this Package</h3>
+              <div class="card-price mb-3"><span id="pkg-price-display" style="font-size: 2rem; color: var(--primary-dark); font-weight: 700;"></span> <span id="pkg-price-suffix" style="font-size: 1rem; color: var(--text-light);">/ person</span></div>
+              <form id="booking-form">
+                <div class="form-group"><label>Name</label><input type="text" class="form-control" id="b-name" required></div>
+                <div class="form-group"><label>Phone</label><input type="tel" class="form-control" id="b-phone" pattern="[0-9]{10}" minlength="10" maxlength="10" title="Please enter a valid 10-digit phone number" required></div>
+                <div class="form-group"><label>Date of Arrival</label><input type="date" class="form-control" id="b-date" required></div>
+                <div class="form-group"><label>Number of Guests</label><input type="number" class="form-control" id="b-guests" min="1" required></div>
+                <div class="form-group"><label>Special Requests</label><textarea class="form-control" id="b-message" rows="2" placeholder="Any specific requirements..."></textarea></div>
+                <button type="submit" class="btn btn-primary w-100">Book Package</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="js/data.js?v=5"></script>
+  <script src="js/main.js?v=5"></script>
+  <script>
+    function robustParseArray(val) {
+      if (!val) return [];
+      if (Array.isArray(val)) {
+        if (val.length === 1 && typeof val[0] === 'string' && (val[0].startsWith('[') || val[0].startsWith('{'))) {
+          try {
+            return robustParseArray(JSON.parse(val[0]));
+          } catch (e) {
+            return val;
+          }
+        }
+        return val.flatMap(item => {
+          if (typeof item === 'string' && (item.startsWith('[') || item.startsWith('{'))) {
+            try {
+              const parsed = JSON.parse(item);
+              return robustParseArray(parsed);
+            } catch (e) {
+              return item;
+            }
+          }
+          return item;
+        });
+      }
+      if (typeof val === 'string') {
+        try {
+          const parsed = JSON.parse(val);
+          return robustParseArray(parsed);
+        } catch (e) {
+          if (val.includes('\n')) {
+            return val.split('\n').map(x => x.trim()).filter(Boolean);
+          }
+          return [val];
+        }
+      }
+      return [];
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const pkgId = urlParams.get('id');
+      
+      let pkg;
+      try {
+        const res = await fetch(`/api/packages?t=${Date.now()}`);
+        if (res.ok) {
+          const pkgs = await res.json();
+          pkg = pkgs.find(p => p.id === pkgId);
+        }
+      } catch (error) {
+        console.error("Fetch failed, using static fallback", error);
+      }
+
+      if (!pkg && typeof appData !== 'undefined' && appData.packages) {
+        pkg = appData.packages.find(p => p.id === pkgId);
+      }
+
+      if (pkg) {
+        document.getElementById('content-section').style.display = 'block';
+        document.getElementById('pkg-title').textContent = pkg.title;
+        document.getElementById('pkg-duration').textContent = pkg.duration;
+        document.getElementById('pkg-desc').textContent = pkg.description;
+
+        const pricing = getCurrentPrice(pkg);
+        const basePrice = pricing.price;
+
+        function updatePackagePriceDisplay(guests = 1) {
+            const totalPrice = basePrice * guests;
+            let priceHTML = `₹${totalPrice.toLocaleString()}`;
+            if (pkg.is_offer && pricing.original && pricing.original > basePrice) {
+                const totalOriginal = pricing.original * guests;
+                priceHTML = `
+                  <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    <span style="text-decoration: line-through; color: var(--text-light); font-size: 1rem; font-weight: normal;">₹${totalOriginal.toLocaleString()}</span>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                      <span style="color: var(--primary-dark); font-size: 2.5rem; font-weight: 800;">₹${totalPrice.toLocaleString()}</span>
+                    </div>
+                  </div>
+                `;
+            }
+            document.getElementById('pkg-price-display').innerHTML = priceHTML;
+            document.getElementById('pkg-price-suffix').textContent = guests > 1 ? `total for ${guests} guests` : '/ person';
+        }
+
+        updatePackagePriceDisplay(1);
+
+        const guestsInput = document.getElementById('b-guests');
+        if (guestsInput) {
+            guestsInput.addEventListener('input', (e) => {
+                let guests = parseInt(e.target.value) || 1;
+                if (guests < 1) guests = 1;
+                updatePackagePriceDisplay(guests);
+            });
+        }
+
+        // Gallery
+        let images = [];
+        try { images = pkg.images ? (typeof pkg.images === 'string' ? JSON.parse(pkg.images) : pkg.images) : [pkg.image]; } catch(e) { images = [pkg.image]; }
+        const galleryRoot = document.getElementById('gallery-root');
+        galleryRoot.innerHTML = images.map((img, i) => `<div class="gallery-slide ${i===0?'active':''}"><img src="${img}"></div>`).join('');
+        if(images.length > 1) {
+            galleryRoot.insertAdjacentHTML('beforeend', `
+                <div class="gallery-nav">
+                    ${images.map((_, i) => `<div class="gallery-dot ${i===0?'active':''}" onclick="switchSlide(${i})"></div>`).join('')}
+                </div>
+                <button class="gallery-arrow prev" onclick="prevSlide()"><i data-lucide="chevron-left"></i></button>
+                <button class="gallery-arrow next" onclick="nextSlide()"><i data-lucide="chevron-right"></i></button>
+            `);
+        }
+
+        // Inclusions & Itinerary ... (Keep existing logic but cleaned up)
+        const incList = document.getElementById('pkg-inclusions');
+        incList.innerHTML = '';
+        const cleanInclusions = robustParseArray(pkg.inclusions);
+        cleanInclusions.forEach(inc => {
+          incList.innerHTML += `<li style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;"><i data-lucide="check" style="color:var(--primary);"></i> ${inc}</li>`;
+        });
+
+        const itinContainer = document.getElementById('pkg-itinerary');
+        itinContainer.innerHTML = '';
+        const parsedItinerary = robustParseArray(pkg.itinerary);
+        console.log("Itinerary data for package:", pkg.title, parsedItinerary);
+        
+        if (Array.isArray(parsedItinerary) && parsedItinerary.length > 0) {
+          parsedItinerary.forEach((day, index) => {
+            let desc = day.desc || day.description || 'No description provided.';
+            if (typeof desc === 'string') {
+              desc = desc.replaceAll('\\n', '\n');
+            }
+            itinContainer.innerHTML += `
+              <div class="accordion-item ${index === 0 ? 'active' : ''}">
+                <div class="accordion-header">Day ${day.day || (index + 1)}: ${day.title || 'Activities'} <i data-lucide="chevron-down"></i></div>
+                <div class="accordion-content" style="white-space: pre-wrap;"><p style="white-space: pre-wrap; margin: 0; line-height: 1.6;">${desc}</p></div>
+              </div>`;
+          });
+        } else {
+          itinContainer.innerHTML = '<p style="color: var(--text-light);">Itinerary details are not available for this package.</p>';
+        }
+
+        document.getElementById('booking-form').onsubmit = async (e) => {
+          e.preventDefault();
+          const data = {
+            customer_name: document.getElementById('b-name').value,
+            customer_phone: document.getElementById('b-phone').value,
+            item_type: 'package', item_id: pkg.id,
+            check_in: document.getElementById('b-date').value,
+            guests: parseInt(document.getElementById('b-guests').value),
+            message: document.getElementById('b-message').value
+          };
+          try {
+            await fetch('/api/bookings', { 
+              method: 'POST', 
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(data) 
+            });
+          } catch(err) {
+            console.error('Error sending booking to backend:', err);
+          }
+          window.open(generateWhatsAppLink(`Hi! I'd like to book ${pkg.title} on ${data.check_in} for ${data.guests} guests.`), '_blank');
+        };
+
+        lucide.createIcons();
+        initAccordion();
+      }
+    });
+
+    function initAccordion() {
+      document.querySelectorAll('.accordion-header').forEach(header => {
+        header.addEventListener('click', () => {
+          const item = header.parentElement;
+          const isActive = item.classList.contains('active');
+          
+          // Close all others
+          document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('active'));
+          
+          if (!isActive) {
+            item.classList.add('active');
+          }
+        });
+      });
+    }
+
+    let currentSlideIdx = 0;
+    function switchSlide(idx) {
+        const slides = document.querySelectorAll('.gallery-slide');
+        const dots = document.querySelectorAll('.gallery-dot');
+        if (!slides.length) return;
+        
+        currentSlideIdx = (idx + slides.length) % slides.length;
+        
+        slides.forEach(s => s.classList.remove('active'));
+        dots.forEach(d => d.classList.remove('active'));
+        
+        slides[currentSlideIdx].classList.add('active');
+        if (dots[currentSlideIdx]) dots[currentSlideIdx].classList.add('active');
+    }
+
+    function nextSlide() { switchSlide(currentSlideIdx + 1); }
+    function prevSlide() { switchSlide(currentSlideIdx - 1); }
+  </script>
+</body>
+</html>
+
+

@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Courtallam Holidays by Tourver | Nature Stays & Packages in Courtallam</title>
+  <meta name="description"
+    content="Discover the best resorts, nature stays, and travel packages in Courtallam with Courtallam Holidays. Experience the spa of South India in luxury.">
+  <meta name="keywords" content="Courtallam, resorts, hotels, nature stays, travel packages, waterfalls, South India">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="stylesheet" href="css/main.css?v=6">
+  <link rel="stylesheet" href="css/nav.css?v=6">
+  <link rel="stylesheet" href="css/components.css?v=6">
+  <style>
+    .hero {
+      position: relative;
+      overflow: hidden;
+      height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+    }
+
+    .carousel-track {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .carousel-slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
+    }
+
+    .carousel-slide.active {
+      opacity: 1;
+    }
+
+    .carousel-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.6);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      color: #fff;
+      padding: 0 1rem;
+    }
+
+    .feature-icon {
+      width: 64px;
+      height: 64px;
+      background: var(--bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto var(--spacing-md);
+      color: var(--primary);
+    }
+
+    .feature-icon i {
+      width: 32px;
+      height: 32px;
+    }
+
+    /* Services Animation (Global) */
+    .services-motion-section {
+      padding: 5rem 0;
+      overflow: hidden;
+      background: #f0f7f3;
+    }
+
+    .services-motion-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .services-motion-header h2 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .services-motion-slider {
+      width: 100%;
+      overflow-x: auto;
+      scrollbar-width: none; /* Hide scrollbar for Firefox */
+      -ms-overflow-style: none;  /* Hide scrollbar for IE/Edge */
+      position: relative;
+      padding: 20px 0;
+      cursor: grab;
+      user-select: none;
+      scroll-behavior: auto !important;
+    }
+    .services-motion-slider:active {
+      cursor: grabbing;
+    }
+    .services-motion-slider::-webkit-scrollbar {
+      display: none; /* Hide scrollbar for Chrome/Safari */
+    }
+
+    /* Fade edge masks removed — were causing white splash on card edges */
+
+    .services-motion-track {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 2rem;
+      width: max-content;
+      will-change: transform;
+    }
+
+    .glimpse-viewport {
+      width: 100%;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      cursor: grab;
+      user-select: none;
+      scroll-behavior: auto !important;
+    }
+    .glimpse-viewport:active {
+      cursor: grabbing;
+    }
+    .glimpse-viewport::-webkit-scrollbar {
+      display: none;
+    }
+    .glimpse-track {
+      animation: none !important;
+    }
+
+    .service-card-motion {
+      width: 320px;
+      flex-shrink: 0;
+      background: #ffffff;
+      padding: 2.5rem 2rem;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25rem;
+      box-shadow: 0 8px 24px rgba(26, 127, 90, 0.08);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .service-card-motion:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(26, 127, 90, 0.18);
+      border-color: var(--primary);
+      background: #fff;
+    }
+
+    .service-card-icon {
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg, var(--bg), #fff);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+      margin-bottom: 0.5rem;
+    }
+
+    .service-card-motion h3 {
+      font-size: 1.5rem;
+      margin: 0;
+      color: var(--primary-dark);
+    }
+
+    .service-card-motion p {
+      font-size: 1rem;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    @keyframes scrollServicesRightToLeft {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .services-motion-section {
+        padding: 3rem 0;
+      }
+
+      .services-motion-header h2 {
+        font-size: 1.8rem !important;
+      }
+
+      .services-motion-header p {
+        font-size: 0.95rem !important;
+      }
+
+      .service-card-motion {
+        width: 280px;
+        padding: 2rem 1.5rem;
+      }
+
+      .services-motion-track {
+        gap: 1.5rem;
+      }
+
+
+      .hero-content h1 {
+        font-size: 2.2rem !important;
+      }
+
+      .hero-content p {
+        font-size: 1rem !important;
+      }
+
+      h2 {
+        font-size: 1.8rem !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .services-motion-header h2 {
+        font-size: 1.5rem !important;
+      }
+      .services-motion-header {
+        margin-bottom: 1.5rem !important;
+      }
+      .hero-content h1 {
+        font-size: 1.7rem !important;
+      }
+      .hero-content p {
+        font-size: 0.9rem !important;
+      }
+      h2 {
+        font-size: 1.45rem !important;
+      }
+      .slider-container {
+        padding: 0 10px !important;
+      }
+    }
+
+    /* Popular Packages — Desktop: 3-column grid, Mobile: slider */
+    .packages-desktop-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .packages-mobile-slider {
+      display: none;
+    }
+
+    .slider-container {
+      position: relative;
+      margin: 0;
+      padding: 0 40px;
+    }
+
+    .slider-wrapper {
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 1rem 0;
+      width: 100%;
+      scroll-behavior: smooth;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .slider-wrapper::-webkit-scrollbar {
+      display: none;
+    }
+
+    .packages-slider-track {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .packages-slider-track .card {
+      width: 100%;
+      flex-shrink: 0;
+      margin: 0;
+      scroll-snap-align: center;
+    }
+
+    .slider-container .slider-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      background: white;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: var(--shadow-md);
+    }
+
+    .slider-container .slider-arrow:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .slider-container .slider-arrow.disabled {
+      opacity: 0.1;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    #pkg-prev {
+      left: 0;
+    }
+
+    #pkg-next {
+      right: 0;
+    }
+
+    @media (max-width: 768px) {
+      .packages-desktop-grid {
+        display: none;
+      }
+
+      .packages-mobile-slider {
+        display: block;
+      }
+    }
+    .stat-card:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.12) !important;
+      border-color: var(--accent) !important;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-brand">
+        <div style="display: flex; align-items: center;"><img src="images/logo.png" alt="Logo"
+            style="height: 80px; margin-right: 12px; margin-top: -10px; margin-bottom: -10px;">
+          <div style="display: inline-flex; flex-direction: column; line-height: 1;"><span style="font-size: 1.5rem; font-weight: 700; color: inherit; white-space: nowrap;">Courtallam Holidays</span><span style="font-size: 0.75rem; font-weight: 600; letter-spacing: 3px; color: var(--accent); margin-top: 2px; white-space: nowrap;">BY TOURVER</span>
+          </div>
+        </div>
+      </a>
+
+      <button class="mobile-toggle">
+        <i data-lucide="menu"></i>
+      </button>
+
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="packages.html" class="nav-link">Packages</a>
+        <a href="rooms.html" class="nav-link">Rooms</a>
+        <a href="transport.html" class="nav-link">Transport</a>
+        <a href="about.html" class="nav-link">About Us</a>
+        <a href="contact.html" class="btn btn-primary">Enquiry Now</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="carousel-track" id="hero-carousel">
+      <div class="carousel-slide active"><img src="images/hero_waterfall_1776485432981.png" alt="Hero"></div>
+    </div>
+    <div class="hero-content fade-in">
+      <h1>Experience the Magic of Courtallam</h1>
+      <p>Your perfect getaway starts here. Handcrafted travel packages and comfortable stays.</p>
+      <div class="hero-buttons"
+        style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-top: 2rem;">
+        <a href="packages.html" class="btn btn-primary"><i data-lucide="map"
+            style="width: 18px; height: 18px; margin-right: 8px; vertical-align: middle;"></i> Packages</a>
+        <a href="rooms.html" class="btn btn-primary"><i data-lucide="bed-double"
+            style="width: 18px; height: 18px; margin-right: 8px; vertical-align: middle;"></i> Rooms</a>
+        <a href="transport.html" class="btn btn-primary"><i data-lucide="car"
+            style="width: 18px; height: 18px; margin-right: 8px; vertical-align: middle;"></i> Transport</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Redesigned Search Bar -->
+  <div class="container search-form-container fade-in">
+    <form action="rooms.html" method="GET" class="search-form">
+      <div class="search-group">
+        <label><i data-lucide="calendar"></i> Check-in</label>
+        <input type="date" name="checkin" class="form-control" required>
+      </div>
+      <div class="search-group">
+        <label><i data-lucide="calendar-days"></i> Check-out</label>
+        <input type="date" name="checkout" class="form-control" required>
+      </div>
+      <div class="search-group">
+        <label><i data-lucide="users"></i> Adults</label>
+        <input type="number" name="persons" class="form-control" min="1" value="2" required>
+      </div>
+      <div class="search-group">
+        <label><i data-lucide="baby"></i> Children</label>
+        <input type="number" name="children" class="form-control" min="0" value="0">
+      </div>
+      <div class="search-group">
+        <label><i data-lucide="door-open"></i> Rooms</label>
+        <input type="number" name="roomsCount" class="form-control" min="1" value="1" required>
+      </div>
+      <button type="submit" class="search-btn">
+        <i data-lucide="search"></i> Search
+      </button>
+    </form>
+  </div>
+
+  <!-- Services Motion Section -->
+  <section class="services-motion-section" id="services">
+    <div class="container">
+      <div class="services-motion-header">
+        <h2 class="text-primary">What We Offer</h2>
+        <p>Everything you need for your trip</p>
+      </div>
+      <div class="services-motion-slider">
+        <div class="services-motion-track">
+          <!-- Cards duplicated for marquee -->
+          <div class="service-card-motion">
+            <div class="service-card-icon"><i data-lucide="map"></i></div>
+            <h3>Packages</h3>
+            <p>Curated tours and weekend getaways.</p><a href="packages.html" class="btn btn-primary btn-sm">Explore</a>
+          </div>
+          <div class="service-card-motion">
+            <div class="service-card-icon"><i data-lucide="bed-double"></i></div>
+            <h3>Room Stays</h3>
+            <p>Comfortable rooms.</p><a href="rooms.html" class="btn btn-primary btn-sm">Book Now</a>
+          </div>
+          <div class="service-card-motion">
+            <div class="service-card-icon"><i data-lucide="car"></i></div>
+            <h3>Transport</h3>
+            <p>Local autos and cabs for sightseeing.</p><a href="transport.html" class="btn btn-primary btn-sm">Hire
+              Now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Popular Packages -->
+  <section class="section section-light" style="padding-bottom: 2rem;">
+    <div class="container">
+      <div class="flex justify-between items-center mb-4">
+        <div>
+          <h2 class="text-primary mb-1">Popular Packages</h2>
+          <p>Our most booked experiences</p>
+        </div>
+      </div>
+
+      <!-- Desktop: 3-column grid -->
+      <div class="packages-desktop-grid" id="home-packages-desktop">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Mobile: Slider with arrows -->
+      <div class="packages-mobile-slider">
+        <div class="slider-container">
+          <button class="slider-arrow" id="pkg-prev"><i data-lucide="chevron-left"></i></button>
+          <button class="slider-arrow" id="pkg-next"><i data-lucide="chevron-right"></i></button>
+          <div class="slider-wrapper">
+            <div class="packages-slider-track" id="home-packages-mobile">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats-section" style="padding: 4rem 0; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; text-align: center; position: relative; overflow: hidden;">
+    <div style="position: absolute; top: -50px; left: -50px; width: 200px; height: 200px; background: rgba(255,255,255,0.03); border-radius: 50%;"></div>
+    <div style="position: absolute; bottom: -50px; right: -50px; width: 300px; height: 300px; background: rgba(255,255,255,0.03); border-radius: 50%;"></div>
+    <div class="container stats-container" style="display: flex; justify-content: center; gap: 4rem; flex-wrap: wrap; position: relative; z-index: 2;">
+      <div class="stat-card" style="flex: 1; min-width: 200px; max-width: 300px; padding: 1.5rem; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); transition: transform 0.3s ease;">
+        <i data-lucide="users" style="width: 40px; height: 40px; color: var(--accent); margin: 0 auto 1rem; display: block;"></i>
+        <h2 id="stat-guests-v" style="font-size: 3rem; font-weight: 700; margin: 0 0 0.5rem; color: #fff; font-family: 'Playfair Display', serif;">500+</h2>
+        <p id="stat-guests-l" style="font-size: 1.1rem; color: rgba(255, 255, 255, 0.85); margin: 0; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;">Happy Guests</p>
+      </div>
+      <div class="stat-card" style="flex: 1; min-width: 200px; max-width: 300px; padding: 1.5rem; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); transition: transform 0.3s ease;">
+        <i data-lucide="droplet" style="width: 40px; height: 40px; color: var(--accent); margin: 0 auto 1rem; display: block;"></i>
+        <h2 id="stat-water-v" style="font-size: 3rem; font-weight: 700; margin: 0 0 0.5rem; color: #fff; font-family: 'Playfair Display', serif;">5+</h2>
+        <p id="stat-water-l" style="font-size: 1.1rem; color: rgba(255, 255, 255, 0.85); margin: 0; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;">Waterfalls to Explore</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Glimpses of Tenkasi (Horizontal Marquee) -->
+  <section class="glimpse-section" id="glimpses">
+    <div class="container">
+      <div class="text-center mb-4">
+        <h2 class="text-primary">Glimpses of Tenkasi</h2>
+        <p>Beyond the waterfalls, explore the cultural soul of Tenkasi District.</p>
+      </div>
+    </div>
+    <div class="glimpse-viewport">
+      <div class="glimpse-track" id="glimpse-track">
+        <!-- Loaded dynamically from /api/glimpses -->
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- Call to Action Banner -->
+  <section class="section section-dark text-center">
+    <div class="container fade-in">
+      <h2>Plan Your Courtallam Trip Today</h2>
+      <p style="max-width: 600px; margin: 0 auto var(--spacing-xl);">Spots fill up fast during the season. Book your
+        stay or package now to secure the best dates.</p>
+      <a href="contact.html" class="btn btn-light" style="font-size: 1.1rem; padding: 1rem 2rem;">Contact Us via
+        WhatsApp</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container grid grid-cols-3">
+      <div>
+        <a href="index.html" class="nav-brand mb-2" style="padding: 0;">
+          <div style="display: flex; align-items: center;"><img src="images/logo.png" alt="Logo"
+              style="height: 80px; margin-right: 12px; margin-top: -10px; margin-bottom: -10px;">
+            <div style="display: inline-flex; flex-direction: column; line-height: 1;"><span style="font-size: 1.5rem; font-weight: 700; color: inherit; white-space: nowrap;">Courtallam Holidays</span><span style="font-size: 0.75rem; font-weight: 600; letter-spacing: 3px; color: var(--accent); margin-top: 2px; white-space: nowrap;">BY TOURVER</span>
+            </div>
+          </div>
+        </a>
+        <p style="color: var(--text-light); max-width: 300px;">Your trusted partner for memorable stays and experiences
+          in the Spa of South India.</p>
+      </div>
+      <div>
+        <h3>Quick Links</h3>
+        <div class="footer-links">
+          <a href="packages.html">Travel Packages</a>
+          <a href="rooms.html">Rooms & Stays</a>
+          <a href="transport.html">Transport</a>
+          <a href="about.html">About Us</a>
+        </div>
+      </div>
+      <div>
+        <h3>Contact Info</h3>
+        <div class="footer-links" style="gap: var(--spacing-md);">
+          <div style="display: flex; gap: 10px; color: var(--text-light);" class="contact-phone-text">
+            <i data-lucide="phone"></i> +91 73392 84010
+          </div>
+          <div style="display: flex; gap: 10px; color: var(--text-light);" class="contact-email-text">
+            <i data-lucide="mail"></i> bookings@courtallamseasons.com
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container footer-bottom"
+      style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+      <div>&copy; 2026 Courtallam Holidays by Tourver. All rights reserved.</div>
+
+    </div>
+  </footer>
+
+  <script src="js/data.js?v=8"></script>
+  <script src="js/main.js?v=8"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      lucide.createIcons();
+
+      // Hybrid Auto + Manual Drag Scroll
+      // - Auto-scrolls continuously
+      // - On any interaction (mouse/touch/wheel): pauses auto-scroll, lets browser handle momentum freely
+      // - After 1.5s of no interaction: syncs position from wherever the browser stopped, then resumes auto-scroll
+      // True Infinite Scroll Engine
+      // Clones content N times and silently wraps scroll position so user never hits a boundary.
+      // Works with auto-scroll, mouse drag, touch swipe, wheel, and momentum.
+      function setupHybridSlider(viewportEl, trackEl, speed, totalSets) {
+        if (!viewportEl || !trackEl) return;
+        totalSets = totalSets || 4; // default: original + 3 clones = 4 identical sets
+
+        let isManual = false;
+        let resumeTimer = null;
+        let scrollPos = 0;
+        let hasInit = false;
+        let isWrapping = false; // guard to prevent recursive scroll events during wrap
+
+        // Mouse drag state
+        let isDragging = false;
+        let dragStartX = 0;
+        let dragStartScrollLeft = 0;
+
+        // One "set" = track.scrollWidth / totalSets
+        function getSetWidth() {
+          return trackEl.scrollWidth / totalSets;
+        }
+
+        function stopAutoScroll() {
+          isManual = true;
+          clearTimeout(resumeTimer);
+        }
+
+        function scheduleResume() {
+          clearTimeout(resumeTimer);
+          resumeTimer = setTimeout(() => {
+            scrollPos = viewportEl.scrollLeft;
+            isManual = false;
+          }, 500);
+        }
+
+        // --- Seamless Infinite Wrapping ---
+        // Keep scroll position within the middle two sets (set 1 to set 2).
+        // When it drifts beyond that range, silently teleport back by one setWidth.
+        function wrapPosition() {
+          if (isWrapping) return;
+          const setW = getSetWidth();
+          if (setW <= 0) return;
+          const current = viewportEl.scrollLeft;
+          // Upper boundary: if we scroll past 3 sets, jump back by one set
+          if (current >= setW * (totalSets - 1)) {
+            isWrapping = true;
+            viewportEl.scrollLeft = current - setW;
+            scrollPos = viewportEl.scrollLeft;
+            isWrapping = false;
+          }
+          // Lower boundary: if we scroll before 1 set, jump forward by one set
+          else if (current <= setW * 0.5) {
+            isWrapping = true;
+            viewportEl.scrollLeft = current + setW;
+            scrollPos = viewportEl.scrollLeft;
+            isWrapping = false;
+          }
+        }
+
+        viewportEl.addEventListener('scroll', wrapPosition);
+
+        // --- Mouse drag ---
+        viewportEl.addEventListener('mousedown', (e) => {
+          isDragging = true;
+          dragStartX = e.pageX - viewportEl.offsetLeft;
+          dragStartScrollLeft = viewportEl.scrollLeft;
+          stopAutoScroll();
+          viewportEl.style.cursor = 'grabbing';
+        });
+
+        window.addEventListener('mouseup', () => {
+          if (!isDragging) return;
+          isDragging = false;
+          viewportEl.style.cursor = 'grab';
+          scheduleResume();
+        });
+
+        viewportEl.addEventListener('mousemove', (e) => {
+          if (!isDragging) return;
+          e.preventDefault();
+          const x = e.pageX - viewportEl.offsetLeft;
+          const walk = (x - dragStartX) * 1.8;
+          viewportEl.scrollLeft = dragStartScrollLeft - walk;
+        });
+
+        viewportEl.addEventListener('mouseleave', () => {
+          if (isDragging) {
+            isDragging = false;
+            viewportEl.style.cursor = 'grab';
+            scheduleResume();
+          }
+        });
+
+        // --- Touch ---
+        viewportEl.addEventListener('touchstart', stopAutoScroll, { passive: true });
+        viewportEl.addEventListener('touchend', scheduleResume, { passive: true });
+        viewportEl.addEventListener('touchcancel', scheduleResume, { passive: true });
+
+        // --- RAF loop ---
+        function loop() {
+          const setW = getSetWidth();
+          if (setW > 0 && !hasInit) {
+            // Start in the middle zone so wrapping in either direction works immediately
+            viewportEl.scrollLeft = setW * 1.5;
+            scrollPos = viewportEl.scrollLeft;
+            hasInit = true;
+          }
+
+          if (!isManual) {
+            scrollPos = viewportEl.scrollLeft + speed;
+            viewportEl.scrollLeft = scrollPos;
+          } else {
+            scrollPos = viewportEl.scrollLeft;
+          }
+          requestAnimationFrame(loop);
+        }
+
+        loop();
+      }
+
+      // Initialize Services Hybrid Slider — clone cards 3x (4 total sets) for seamless infinite loop
+      const servicesSlider = document.querySelector('.services-motion-slider');
+      const servicesTrack = document.querySelector('.services-motion-track');
+      if (servicesSlider && servicesTrack) {
+        const origCards = Array.from(servicesTrack.children);
+        for (let i = 0; i < 3; i++) {
+          origCards.forEach(card => servicesTrack.appendChild(card.cloneNode(true)));
+        }
+        lucide.createIcons();
+        setupHybridSlider(servicesSlider, servicesTrack, 0.6, 4);
+      }
+
+      // Dynamic Settings/Stats
+      try {
+        const sRes = await fetch('/api/settings');
+        const settings = await sRes.json();
+        if (settings['stat-guests-count']) document.getElementById('stat-guests-v').textContent = settings['stat-guests-count'];
+        if (settings['stat-guests-label']) document.getElementById('stat-guests-l').textContent = settings['stat-guests-label'];
+        if (settings['stat-waterfalls-count']) document.getElementById('stat-water-v').textContent = settings['stat-waterfalls-count'];
+        if (settings['stat-waterfalls-label']) document.getElementById('stat-water-l').textContent = settings['stat-waterfalls-label'];
+      } catch (e) { }
+
+      // Hero Carousel
+      try {
+        const bRes = await fetch('/api/banners');
+        const banners = await bRes.json();
+        if (banners.length > 0) {
+          const track = document.getElementById('hero-carousel');
+          track.innerHTML = banners.map((b, i) => `<div class="carousel-slide ${i === 0 ? 'active' : ''}"><img src="${b.image_url}" alt="Hero"></div>`).join('');
+
+          let cur = 0;
+          setInterval(() => {
+            const slides = document.querySelectorAll('.carousel-slide');
+            if (slides.length < 2) return;
+            slides[cur].classList.remove('active');
+            cur = (cur + 1) % slides.length;
+            slides[cur].classList.add('active');
+          }, 3000);
+        }
+      } catch (e) { }
+
+      // Popular Packages — Desktop grid + Mobile slider
+      const desktopGrid = document.getElementById('home-packages-desktop');
+      const mobileContainer = document.getElementById('home-packages-mobile');
+      const nextBtn = document.getElementById('pkg-next');
+      const prevBtn = document.getElementById('pkg-prev');
+
+      if (desktopGrid && mobileContainer) {
+        let packagesHTML = '';
+        try {
+          const res = await fetch(`/api/packages?t=${Date.now()}`);
+          const dbPackages = await res.json();
+          const display = dbPackages.filter(p => p.is_popular).sort((a, b) => a.display_order - b.display_order);
+          packagesHTML = (display.length > 0 ? display : dbPackages.slice(0, 3)).map(createPackageCard).join('');
+        } catch (e) {
+          packagesHTML = (appData.packages || []).slice(0, 3).map(createPackageCard).join('');
+        }
+        desktopGrid.innerHTML = packagesHTML;
+        mobileContainer.innerHTML = packagesHTML;
+        lucide.createIcons();
+
+        // Mobile Slider Native Scroll Logic
+        const wrapper = mobileContainer.parentElement;
+
+        const updateWidths = () => {
+          const cardWidth = wrapper.clientWidth;
+          const cards = mobileContainer.querySelectorAll('.card');
+          cards.forEach(c => c.style.width = cardWidth + 'px');
+          updateArrows();
+        };
+
+        setTimeout(updateWidths, 100);
+        window.addEventListener('resize', updateWidths);
+
+        nextBtn?.addEventListener('click', () => {
+          wrapper.scrollBy({ left: wrapper.clientWidth, behavior: 'smooth' });
+        });
+
+        prevBtn?.addEventListener('click', () => {
+          wrapper.scrollBy({ left: -wrapper.clientWidth, behavior: 'smooth' });
+        });
+
+        wrapper.addEventListener('scroll', updateArrows);
+
+        function updateArrows() {
+          if (!prevBtn || !nextBtn) return;
+          const maxScroll = wrapper.scrollWidth - wrapper.clientWidth;
+          const currentPos = wrapper.scrollLeft;
+          
+          prevBtn.classList.toggle('disabled', currentPos <= 5);
+          nextBtn.classList.toggle('disabled', currentPos >= maxScroll - 5);
+        }
+      }
+
+      // Glimpses of Tenkasi — Dynamic load from API
+      const glimpseTrack = document.getElementById('glimpse-track');
+      if (glimpseTrack) {
+        try {
+          const gRes = await fetch('/api/glimpses');
+          const glimpses = await gRes.json();
+          if (glimpses.length > 0) {
+            // Insert unique cards only
+            glimpseTrack.innerHTML = glimpses.map(g => `
+              <div class="glimpse-card">
+                <img src="${g.image_url}" alt="${g.title}">
+                <div class="glimpse-overlay">
+                  <h3>${g.title}</h3>
+                  <p>${g.description || ''}</p>
+                </div>
+              </div>
+            `).join('');
+          } else {
+            // Fallback static cards (unique only)
+            glimpseTrack.innerHTML = `
+              <div class="glimpse-card"><img src="images/gallery_1.png" alt="Temple"><div class="glimpse-overlay"><h3>Spiritual Majesty</h3><p>The iconic Kasi Viswanathar Temple tower.</p></div></div>
+              <div class="glimpse-card"><img src="images/gallery_2.png" alt="Scenery"><div class="glimpse-overlay"><h3>Verdant Valleys</h3><p>Lush paddy fields of the Western Ghats.</p></div></div>
+              <div class="glimpse-card"><img src="images/gallery_3.png" alt="Falls"><div class="glimpse-overlay"><h3>Old Falls</h3><p>The hidden gem of Pazhaya Courtallam.</p></div></div>
+            `;
+          }
+        } catch (e) {
+          glimpseTrack.innerHTML = `
+            <div class="glimpse-card"><img src="images/gallery_1.png" alt="Temple"><div class="glimpse-overlay"><h3>Spiritual Majesty</h3><p>The iconic Kasi Viswanathar Temple tower.</p></div></div>
+            <div class="glimpse-card"><img src="images/gallery_2.png" alt="Scenery"><div class="glimpse-overlay"><h3>Verdant Valleys</h3><p>Lush paddy fields of the Western Ghats.</p></div></div>
+            <div class="glimpse-card"><img src="images/gallery_3.png" alt="Falls"><div class="glimpse-overlay"><h3>Old Falls</h3><p>The hidden gem of Pazhaya Courtallam.</p></div></div>
+          `;
+        }
+
+        // Clone cards 3x (4 total sets) for seamless infinite loop
+        const origGlimpseCards = Array.from(glimpseTrack.children);
+        for (let i = 0; i < 3; i++) {
+          origGlimpseCards.forEach(card => glimpseTrack.appendChild(card.cloneNode(true)));
+        }
+
+        // Initialize Glimpses Hybrid Slider
+        const glimpseViewport = document.querySelector('.glimpse-viewport');
+        if (glimpseViewport) {
+          setupHybridSlider(glimpseViewport, glimpseTrack, 0.7, 4);
+        }
+      }
+
+      // Search Form Date Validation
+      const searchCheckin = document.querySelector('input[name="checkin"]');
+      const searchCheckout = document.querySelector('input[name="checkout"]');
+      if (searchCheckin && searchCheckout) {
+        const todayStr = new Date().toISOString().split('T')[0];
+        searchCheckin.min = todayStr;
+        searchCheckout.min = todayStr;
+        
+        searchCheckin.addEventListener('change', (e) => {
+          const checkinDate = e.target.value;
+          searchCheckout.min = checkinDate;
+          if (searchCheckout.value && searchCheckout.value < checkinDate) {
+            searchCheckout.value = checkinDate;
+          }
+        });
+      }
+
+      if (typeof initScrollAnimations === 'function') initScrollAnimations();
+    });
+  </script>
+</body>
+
+</html>

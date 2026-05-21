@@ -1,0 +1,17 @@
+To: test_autom@example.com
+Subject: Booking Confirmation & Invoice - CH-20260601-5
+Attachment: uploads\invoices\invoice_CH-20260601-5.pdf
+
+Dear Test Automation Customer,
+    
+Thank you for booking with Courtallam Holidays!
+Your booking for Room has been confirmed.
+
+Booking ID: CH-20260601-5
+Dates: 2026-06-01 to 2026-06-05
+Amount Paid: Rs. 8000
+
+Please find your attached invoice PDF.
+
+Warm regards,
+Courtallam Holidays Team

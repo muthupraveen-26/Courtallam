@@ -1,0 +1,5 @@
+To (Phone): 919999999999
+Message: Hi Test Automation Customer! Your booking is confirmed. Booking ID: CH-20260601-5. Click here to download your invoice: http://localhost:8000/uploads/invoices/invoice_CH-20260601-5.pdf
+Attachment URL: http://localhost:8000/uploads/invoices/invoice_CH-20260601-5.pdf
+n8n Triggered: No
+Evolution API Triggered: No

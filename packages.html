@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Packages | Courtallam Holidays by Tourver</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-brand">
+        <div style="display: flex; align-items: center;"><img src="images/logo.png" alt="Logo" style="height: 80px; margin-right: 12px; margin-top: -10px; margin-bottom: -10px;"><div style="display: inline-flex; flex-direction: column; line-height: 1;"><span style="font-size: 1.5rem; font-weight: 700; color: inherit; white-space: nowrap;">Courtallam Holidays</span><span style="font-size: 0.75rem; font-weight: 600; letter-spacing: 3px; color: var(--accent); margin-top: 2px; white-space: nowrap;">BY TOURVER</span></div></div>
+      </a>
+      <button class="mobile-toggle"><i data-lucide="menu"></i></button>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="packages.html" class="nav-link">Packages</a>
+        <a href="rooms.html" class="nav-link">Rooms</a>
+        <a href="transport.html" class="nav-link">Transport</a>
+        <a href="about.html" class="nav-link">About Us</a>
+        <a href="contact.html" class="btn btn-primary">Enquiry Now</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="section section-dark text-center" style="padding: var(--spacing-2xl) 0;">
+    <div class="container fade-in">
+      <h1>Travel Packages</h1>
+      <p style="max-width: 600px; margin: 0 auto;">Curated itineraries to help you make the most of your Courtallam trip.</p>
+    </div>
+  </header>
+
+  <!-- Content Section -->
+  <section class="section section-light">
+    <div class="container">
+      
+      <!-- Filters -->
+      <div class="tabs-nav fade-in">
+        <button class="tab-btn active" data-target="all">All Packages</button>
+        <button class="tab-btn" data-target="budget">Budget</button>
+        <button class="tab-btn" data-target="standard">Standard</button>
+        <button class="tab-btn" data-target="premium">Premium</button>
+      </div>
+
+      <!-- Packages Grid -->
+      <div class="grid grid-cols-3" id="packages-container">
+        <!-- Rendered via JS -->
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container text-center">
+      <p style="color: var(--text-light);">&copy; 2026 Courtallam Holidays by Tourver. All rights reserved. </p>
+    </div>
+  </footer>
+
+  <script src="js/prices.js?v=6"></script>
+  <script src="js/data.js?v=6"></script>
+  <script src="js/main.js?v=6"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      
+      const container = document.getElementById('packages-container');
+      const tabs = document.querySelectorAll('.tab-btn');
+
+      async function renderPackages(filter = 'all') {
+        container.innerHTML = '<p>Loading packages...</p>';
+        try {
+          const response = await fetch(`/api/packages?t=${Date.now()}`);
+          const dbPackages = await response.json();
+          const packages = dbPackages.length > 0 ? dbPackages : appData.packages;
+          
+          container.innerHTML = '';
+          const filtered = filter === 'all' 
+            ? packages 
+            : packages.filter(p => p.category === filter);
+          
+          if (filtered.length === 0) {
+            container.innerHTML = '<p>No packages found.</p>';
+            return;
+          }
+
+          container.innerHTML = filtered.map(createPackageCard).join('');
+          lucide.createIcons();
+          
+          const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                obs.unobserve(entry.target);
+              }
+            });
+          });
+          document.querySelectorAll('#packages-container .fade-in').forEach(el => observer.observe(el));
+        } catch (error) {
+          console.error("Fetch failed, using static data", error);
+          const packages = appData.packages;
+          const filtered = filter === 'all' ? packages : packages.filter(p => p.category === filter);
+          container.innerHTML = filtered.map(createPackageCard).join('');
+        }
+      }
+
+      renderPackages();
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', (e) => {
+          tabs.forEach(t => t.classList.remove('active'));
+          e.target.classList.add('active');
+          renderPackages(e.target.dataset.target);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
+
+

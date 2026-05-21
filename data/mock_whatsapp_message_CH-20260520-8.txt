@@ -1,0 +1,5 @@
+To (Phone): 9876543210
+Message: Hi John Doe! Your booking is confirmed. Booking ID: CH-20260520-8. Click here to download your invoice: http://localhost:8000/uploads/invoices/invoice_CH-20260520-8.pdf
+Attachment URL: http://localhost:8000/uploads/invoices/invoice_CH-20260520-8.pdf
+n8n Triggered: No
+Evolution API Triggered: No

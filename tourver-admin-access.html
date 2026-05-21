@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courtallam Holidays</title>
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <meta name="googlebot" content="noindex, nofollow">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #1a7f5a;
+            --primary-light: #22a072;
+            --primary-dark: #125c41;
+            --accent: #c5a880;
+            --accent-dark: #b39369;
+            --bg-dark: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --border: rgba(255, 255, 255, 0.08);
+            --text: #f8fafc;
+            --text-light: #94a3b8;
+            --radius: 16px;
+            --radius-sm: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Abstract Premium Background */
+        .bg-mesh {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(26, 127, 90, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(197, 168, 128, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 1) 0%, rgba(8, 12, 21, 1) 100%);
+        }
+
+        .bg-lines {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 0);
+            background-size: 24px 24px;
+            z-index: 2;
+            opacity: 0.8;
+        }
+
+        /* Card Container */
+        .login-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 440px;
+            padding: 2.75rem 2.5rem;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 10;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: cardAppear 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            position: relative;
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Brand Typography */
+        .brand {
+            text-align: center;
+            margin-bottom: 2.25rem;
+        }
+
+        .brand-logo-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 8px 20px rgba(26, 127, 90, 0.3);
+            position: relative;
+            animation: pulseIcon 3s infinite alternate;
+        }
+
+        @keyframes pulseIcon {
+            0% { box-shadow: 0 8px 20px rgba(26, 127, 90, 0.3); }
+            100% { box-shadow: 0 8px 28px rgba(26, 127, 90, 0.6); transform: scale(1.03); }
+        }
+
+        .brand-top {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-bottom {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--accent);
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            margin-top: 0.35rem;
+        }
+
+        /* Forms Layout */
+        .form-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 14px;
+            color: var(--text-light);
+            transition: var(--transition);
+        }
+
+        .form-input {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 0.85rem 1rem 0.85rem 2.65rem;
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .form-input:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(34, 160, 114, 0.15);
+            background: rgba(15, 23, 42, 0.8);
+        }
+
+        .form-input:focus + i {
+            color: var(--primary-light);
+        }
+
+        /* Checkbox Utilities */
+        .row-options {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.75rem;
+        }
+
+        .remember-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .remember-checkbox input {
+            display: none;
+        }
+
+        .custom-check {
+            width: 18px;
+            height: 18px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(15, 23, 42, 0.4);
+            transition: var(--transition);
+        }
+
+        .remember-checkbox input:checked + .custom-check {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .custom-check i {
+            color: #fff;
+            width: 12px;
+            height: 12px;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .remember-checkbox input:checked + .custom-check i {
+            opacity: 1;
+        }
+
+        .remember-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        /* Button Styling */
+        .btn-submit {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: 0.9rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(26, 127, 90, 0.2);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(26, 127, 90, 0.4);
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        /* Notification Banners */
+        .alert {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.85rem 1rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+            display: none;
+            animation: alertIn 0.3s ease forwards;
+        }
+
+        @keyframes alertIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+        }
+
+        .alert-success {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #86efac;
+        }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 2rem 1.25rem;
+                margin: 1rem;
+                max-width: 100%;
+                border-radius: 12px;
+            }
+            .brand-top {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-mesh"></div>
+    <div class="bg-lines"></div>
+
+    <div class="login-card">
+        <div class="brand">
+            <div class="brand-logo-icon">
+                <i data-lucide="shield-check" style="width: 28px; height: 28px;"></i>
+            </div>
+            <div class="brand-top">Courtallam Holidays</div>
+            <div class="brand-bottom">BY TOURVER</div>
+        </div>
+
+        <div id="alertBox" class="alert">
+            <i data-lucide="alert-circle" id="alertIcon" style="width: 18px; height: 18px; flex-shrink: 0;"></i>
+            <span id="alertMsg"></span>
+        </div>
+
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label class="form-label">Admin Email</label>
+                <div class="input-wrapper">
+                    <input type="email" id="email" class="form-input" placeholder="john.doe@example.com" required autocomplete="email">
+                    <i data-lucide="mail" style="width: 16px;"></i>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.25rem;">
+                <label class="form-label">Password</label>
+                <div class="input-wrapper">
+                    <input type="password" id="password" class="form-input" placeholder="mySecretPass123" required autocomplete="current-password">
+                    <i data-lucide="lock" style="width: 16px;"></i>
+                </div>
+            </div>
+
+            <div class="row-options">
+                <label class="remember-checkbox">
+                    <input type="checkbox" id="remember">
+                    <div class="custom-check">
+                        <i data-lucide="check"></i>
+                    </div>
+                    <span class="remember-label">Remember this device</span>
+                </label>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                <span>Access Dashboard</span>
+                <i data-lucide="arrow-right" style="width: 18px;"></i>
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        function showAlert(msg, type = 'error') {
+            const box = document.getElementById('alertBox');
+            const txt = document.getElementById('alertMsg');
+            const icon = document.getElementById('alertIcon');
+            
+            box.className = `alert alert-${type}`;
+            txt.textContent = msg;
+            
+            if (type === 'success') {
+                icon.setAttribute('data-lucide', 'check-circle');
+            } else {
+                icon.setAttribute('data-lucide', 'alert-circle');
+            }
+            lucide.createIcons();
+            
+            box.style.display = 'flex';
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const remember = document.getElementById('remember').checked;
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = '0.7';
+            
+            try {
+                const res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password, remember_device: remember })
+                });
+                
+                const data = await res.json();
+                if (res.ok && data.status === 'success') {
+                    showAlert('Access authorized! Redirecting...', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/admin.html';
+                    }, 1000);
+                } else {
+                    showAlert(data.message || 'Invalid credentials.');
+                    submitBtn.disabled = false;
+                    submitBtn.style.opacity = '1';
+                }
+            } catch (err) {
+                showAlert('Network connection failed. Try again.');
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+            }
+        }
+    </script>
+</body>
+</html>
