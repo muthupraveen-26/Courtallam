@@ -267,6 +267,12 @@
           itinContainer.innerHTML = '<p style="color: var(--text-light);">Itinerary details are not available for this package.</p>';
         }
 
+        const bDateInput = document.getElementById('b-date');
+        if (bDateInput) {
+            const todayStr = new Date().toISOString().split('T')[0];
+            bDateInput.min = todayStr;
+        }
+
         document.getElementById('booking-form').onsubmit = async (e) => {
           e.preventDefault();
           const data = {

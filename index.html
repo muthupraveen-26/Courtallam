@@ -879,10 +879,16 @@
         searchCheckout.min = todayStr;
         
         searchCheckin.addEventListener('change', (e) => {
-          const checkinDate = e.target.value;
-          searchCheckout.min = checkinDate;
-          if (searchCheckout.value && searchCheckout.value < checkinDate) {
-            searchCheckout.value = checkinDate;
+          const ciDate = e.target.value;
+          
+          const nextDay = new Date(ciDate);
+          nextDay.setDate(nextDay.getDate() + 1);
+          const nextDayStr = nextDay.toISOString().split('T')[0];
+          
+          searchCheckout.min = nextDayStr;
+          
+          if (!searchCheckout.value || searchCheckout.value <= ciDate) {
+            searchCheckout.value = nextDayStr;
           }
         });
       }

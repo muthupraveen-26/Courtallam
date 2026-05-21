@@ -281,6 +281,23 @@
         checkinInput.addEventListener('change', checkDatesAvailability);
         checkoutInput.addEventListener('change', checkDatesAvailability);
 
+        // Date Validation Logic
+        const todayStr = new Date().toISOString().split('T')[0];
+        checkinInput.min = todayStr;
+        checkoutInput.min = todayStr;
+        
+        checkinInput.addEventListener('change', (e) => {
+          const ciDate = e.target.value;
+          checkoutInput.min = ciDate; // Check-out must be after check-in
+          if (checkoutInput.value && checkoutInput.value <= ciDate) {
+            // Auto-advance checkout by 1 day if invalid
+            const nextDay = new Date(ciDate);
+            nextDay.setDate(nextDay.getDate() + 1);
+            checkoutInput.value = nextDay.toISOString().split('T')[0];
+            checkDatesAvailability();
+          }
+        });
+
         const amContainer = document.getElementById('room-amenities');
         (room.amenities || []).forEach(am => {
           amContainer.innerHTML += `<div style="display:flex; align-items:center; gap:0.5rem;"><i data-lucide="check" style="color:var(--primary);"></i> ${am}</div>`;
