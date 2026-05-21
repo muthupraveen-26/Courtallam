@@ -715,7 +715,7 @@
           }
 
           if (!isManual) {
-            scrollPos = viewportEl.scrollLeft + speed;
+            scrollPos += speed;
             viewportEl.scrollLeft = scrollPos;
           } else {
             scrollPos = viewportEl.scrollLeft;
@@ -800,13 +800,17 @@
         setTimeout(updateWidths, 100);
         window.addEventListener('resize', updateWidths);
 
-        nextBtn?.addEventListener('click', () => {
-          wrapper.scrollBy({ left: wrapper.clientWidth, behavior: 'smooth' });
-        });
+        if (nextBtn) {
+          nextBtn.addEventListener('click', () => {
+            wrapper.scrollBy({ left: wrapper.clientWidth, behavior: 'smooth' });
+          });
+        }
 
-        prevBtn?.addEventListener('click', () => {
-          wrapper.scrollBy({ left: -wrapper.clientWidth, behavior: 'smooth' });
-        });
+        if (prevBtn) {
+          prevBtn.addEventListener('click', () => {
+            wrapper.scrollBy({ left: -wrapper.clientWidth, behavior: 'smooth' });
+          });
+        }
 
         wrapper.addEventListener('scroll', updateArrows);
 
